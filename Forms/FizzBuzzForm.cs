@@ -1,12 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 
 namespace FizzBuzzLeap.Forms
 {
     public class FizzBuzzForm
     {
-        [Display(Name = "Twój szczęśliwy numerek")]
-        [Required, Range(1, 1000, ErrorMessage = "Oczekiwana wartość {0} z zakresu {1} i {2}.")]
-        public int? Number { get; set; }
+        [DisplayName("Rok")]
+        [Required(ErrorMessage = "To pole jest wymagane.")]
+        [Range(1899, 2022, ErrorMessage = "Oczekiwana wartość {0} z zakresu {1} i {2}.")]
+        public int Year { get; set; }
+
+        [DisplayName("Imię")]
+        [Required(ErrorMessage = "To pole jest wymagane.")]
+        [MaxLength(100, ErrorMessage = "Wprowadź maksymalnie 100 znaków.")]
+        public string Name { get; set; }
     }
 }

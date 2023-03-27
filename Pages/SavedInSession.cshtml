@@ -1,14 +1,31 @@
 ﻿@page
-@model SavedInSessionModel
+@model FizzBuzzLeap.Pages.SavedInSessionModel
 @{
     ViewData["Title"] = "Data in session";
-}
-<p>Dane w zapisane w sesji</p>
-@if (Model.FizzBuzz != null)
-{
-    <p>
-        @Html.DisplayNameFor(model => Model.FizzBuzz.Number):
-        @Model.FizzBuzz.Number
-    </p>
+
 }
 
+@if (!string.IsNullOrWhiteSpace(Model.Name) && !string.IsNullOrWhiteSpace(Model.Year.ToString()))
+{
+    <div>
+        <ul>
+            <li>
+                @Model.Name, @Model.Year - @Model.IfLeap
+            </li>
+        </ul>
+    </div>
+}
+
+@*@if (Model.FizzBuzzList != null && Model.FizzBuzzList.Count > 0)
+{
+<div>
+    <h3>Lista sprawdzeń:</h3>
+    <ul>
+        @foreach (var fizzBuzz in Model.FizzBuzzList)
+        {
+            string leap = fizzBuzz.Year % 4 == 0 && (fizzBuzz.Year % 100 != 0 || fizzBuzz.Year % 400 == 0) ? "rok przestępny" : "rok nieprzestępny";
+            <li>@fizzBuzz.Name, @fizzBuzz.Year - @leap</li>
+        }
+    </ul>
+</div>
+}*@

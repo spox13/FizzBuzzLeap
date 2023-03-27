@@ -1,14 +1,26 @@
 ﻿@page
-@model IndexModel
+@model FizzBuzzLeap.Pages.IndexModel
 @{
-    ViewData["Title"] = "Fizz Buzz";
+    ViewData["Title"] = "Fizz Buzz - Leap Year";
 }
 <div class="text-left">
-    <h1 class="display-4">Welcome @Model.Name</h1>
+    <h1 class="display-4">Welcome</h1>
     <form method="post">
-        <label asp-for="FizzBuzz.Number"></label>
-        <input asp-for="FizzBuzz.Number" /><br />
-        <button type="submit">Zatwierdź</button>
-        <span asp-validation-for="FizzBuzz.Number" class="text-danger"></span>
+        <div class="form-group">
+            <label asp-for="FizzBuzz.Year"></label>
+            <input asp-for="FizzBuzz.Year" class="form-control" />
+            <span asp-validation-for="FizzBuzz.Year" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="FizzBuzz.Name"></label>
+            <input asp-for="FizzBuzz.Name" class="form-control" />
+            <span asp-validation-for="FizzBuzz.Name" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Sprawdź</button>
     </form>
 </div>
+
+@if (ViewData["Message"] != null)
+{
+    <p>@ViewData["Message"]</p>
+}
