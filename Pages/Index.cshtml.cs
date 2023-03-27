@@ -10,8 +10,8 @@ namespace FizzBuzzLeap.Pages
     {
         private readonly ILogger<IndexModel> _logger;
         [BindProperty]
-        public FizzBuzzForm FizzBuzz { get; set; }
-
+        public FizzBuzzForm FizzBuzz { get; set; } = new FizzBuzzForm();
+        public Session SessionFizzBuzz { get; set; } = new Session();
         public IndexModel(ILogger<IndexModel> logger)
         {
             _logger = logger;
@@ -23,30 +23,30 @@ namespace FizzBuzzLeap.Pages
         }
         public IActionResult OnPost()
         {
-            string Leap;
-
             bool isLeapYear = FizzBuzz.Year % 4 == 0 && (FizzBuzz.Year % 100 != 0 || FizzBuzz.Year % 400 == 0);
 
             if (FizzBuzz.Year % 4 == 0 && (FizzBuzz.Year % 100 != 0 || FizzBuzz.Year % 400 == 0))
             {
-                Leap = "rok przestępny";
+                FizzBuzz.Leap = "rok przestępny";
             }
             else
             {
-                Leap = "rok nieprzestępny";
+                FizzBuzz.Leap = "rok nieprzestępny";
             }
 
-            string IfLeap = FizzBuzz.Name + " urodził się w " + FizzBuzz.Year + " roku. " + "Był to " + Leap;
-            if (ModelState.IsValid)
+            string IfLeap = FizzBuzz.Name + " urodził się w " + FizzBuzz.Year + " roku. " + "Był to " + FizzBuzz.Leap;
+
+            if (!String.IsNullOrEmpty(FizzBuzz.Name) && !String.IsNullOrEmpty(FizzBuzz.Year.ToString()) && FizzBuzz.Year >= 1899 && FizzBuzz.Year <= 2022)
             {
                 ViewData["Message"] = IfLeap;
-                HttpContext.Session.SetString("name", FizzBuzz.Name);
-                HttpContext.Session.SetInt32("year", FizzBuzz.Year);
-                HttpContext.Session.SetString("Leap", Leap);
-
-                //List<FizzBuzzForm> FizzBuzzList = HttpContext.Session.Get<List<FizzBuzzForm>>("FizzBuzzList") ?? new List<FizzBuzzForm>();
-                //FizzBuzzList.Add(FizzBuzz);
-                //HttpContext.Session.Set("FizzBuzzList", FizzBuzzList);
+                var Current = HttpContext.Session.GetString("Current");
+                if (Current != null)
+                {
+                    SessionFizzBuzz = JsonConvert.DeserializeObject<Session>(Current);
+                }
+                SessionFizzBuzz.ListOfSessions.Add(FizzBuzz);
+                HttpContext.Session.SetString("Data", JsonConvert.SerializeObject(SessionFizzBuzz));
+                HttpContext.Session.SetString("Current", JsonConvert.SerializeObject(SessionFizzBuzz));
             }
             return Page();
         }
