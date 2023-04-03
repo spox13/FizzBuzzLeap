@@ -11,7 +11,7 @@ namespace FizzBuzzLeap.Pages
         private readonly ILogger<IndexModel> _logger;
         [BindProperty]
         public FizzBuzzForm FizzBuzz { get; set; } = new FizzBuzzForm();
-        public Session SessionFizzBuzz { get; set; } = new Session();
+        public IList<FizzBuzzForm> ListOfSessions { get; set; } = new List<FizzBuzzForm>();
         public IndexModel(ILogger<IndexModel> logger)
         {
             _logger = logger;
@@ -39,14 +39,13 @@ namespace FizzBuzzLeap.Pages
             if (!String.IsNullOrEmpty(FizzBuzz.Name) && !String.IsNullOrEmpty(FizzBuzz.Year.ToString()) && FizzBuzz.Year >= 1899 && FizzBuzz.Year <= 2022)
             {
                 ViewData["Message"] = IfLeap;
-                var Current = HttpContext.Session.GetString("Current");
-                if (Current != null)
+                var Data = HttpContext.Session.GetString("Data");
+                if (Data != null)
                 {
-                    SessionFizzBuzz = JsonConvert.DeserializeObject<Session>(Current);
+                    ListOfSessions = JsonConvert.DeserializeObject<List<FizzBuzzForm>>(Data);
                 }
-                SessionFizzBuzz.ListOfSessions.Add(FizzBuzz);
-                HttpContext.Session.SetString("Data", JsonConvert.SerializeObject(SessionFizzBuzz));
-                HttpContext.Session.SetString("Current", JsonConvert.SerializeObject(SessionFizzBuzz));
+                ListOfSessions.Add(FizzBuzz);
+                HttpContext.Session.SetString("Data", JsonConvert.SerializeObject(ListOfSessions));
             }
             return Page();
         }
